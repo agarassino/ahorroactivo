@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors - Ahorro Activo */
+  --color-primary-dark: #163E70;
+  --color-primary: #37AAE1;
+  --color-secondary: #81CBDB;
+  --color-background: #F4F5F6;
+  --color-footer: #0D2A4D;
+
+  /* Font Family */
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
