@@ -19,10 +19,13 @@ function App() {
       .insert([{ email }])
 
     if (supabaseError) {
+      console.error('Supabase error:', supabaseError)
       if (supabaseError.code === '23505') {
         setError('Este email ya está en la lista de espera')
+      } else if (supabaseError.code === '42P01') {
+        setError('Error: La tabla no existe. Creá la tabla en Supabase.')
       } else {
-        setError('Hubo un error. Intentá de nuevo.')
+        setError(`Error: ${supabaseError.message}`)
       }
       setLoading(false)
       return
@@ -220,7 +223,7 @@ function App() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Tu email"
                   required
-                  className="flex-1 px-6 py-4 rounded-lg text-primary-dark font-medium focus:outline-none focus:ring-2 focus:ring-white"
+                  className="flex-1 px-6 py-4 rounded-lg text-primary-dark font-medium border-2 border-white bg-transparent placeholder:text-primary-dark/50 focus:outline-none focus:ring-2 focus:ring-white focus:bg-white"
                 />
                 <button
                   type="submit"
