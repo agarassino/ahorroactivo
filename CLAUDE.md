@@ -12,23 +12,35 @@ Landing page para Ahorro Activo, una app fintech que permite invertir de forma a
 
 ## URLs
 - **Producción**: https://ahorroactivo.vercel.app
+- **Admin**: https://ahorroactivo.vercel.app/admin
 - **Supabase Dashboard**: https://supabase.com/dashboard/project/cmwbrhatnkjqwqljvifn
 
 ## Estructura del Proyecto
 ```
 ahorroactivo/
 ├── src/
-│   ├── App.tsx          # Componente principal (toda la landing)
-│   ├── main.tsx         # Entry point
+│   ├── App.tsx          # Landing page (carga contenido de Supabase)
+│   ├── Admin.tsx        # Panel de administración
+│   ├── main.tsx         # Entry point + routing
 │   ├── index.css        # Tailwind config + colores de marca
 │   └── lib/
-│       └── supabase.ts  # Cliente de Supabase
+│       ├── supabase.ts  # Cliente de Supabase
+│       └── content.ts   # Funciones para contenido y logo
 ├── public/
 ├── index.html           # HTML base + Montserrat font
 ├── vite.config.ts       # Config de Vite + Tailwind plugin
+├── vercel.json          # Rewrites para SPA routing
 ├── .env                 # Variables de entorno (local)
 └── package.json
 ```
+
+## Admin Panel
+- **URL**: https://ahorroactivo.vercel.app/admin
+- **Password**: `ahorroactivo2024`
+- **Funcionalidades**:
+  - Editar todos los textos de la landing
+  - Subir logo (se guarda en Supabase Storage)
+  - Los cambios se reflejan inmediatamente
 
 ## Colores de Marca
 Definidos en `src/index.css`:
@@ -55,6 +67,16 @@ URL: https://cmwbrhatnkjqwqljvifn.supabase.co
 Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 (Hardcodeadas en `src/lib/supabase.ts` - la anon key es pública por diseño)
+
+### Tabla: content
+Almacena todos los textos editables de la landing.
+```sql
+create table content (
+  key text primary key,
+  value text not null,
+  updated_at timestamp with time zone default now()
+);
+```
 
 ### Tabla: waitlist
 ```sql
