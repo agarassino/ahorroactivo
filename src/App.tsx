@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
-import { getContent, Content } from './lib/content'
+import { getContent } from './lib/content'
+import type { Content } from './lib/content'
 
 function App() {
   const [email, setEmail] = useState('')

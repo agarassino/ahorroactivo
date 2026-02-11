@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getContent, updateContent, uploadLogo, Content } from './lib/content'
+import { getContent, updateContent, uploadLogo } from './lib/content'
+import type { Content } from './lib/content'
 
 const ADMIN_PASSWORD = 'ahorroactivo2024'
 
