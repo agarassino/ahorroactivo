@@ -1,11 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
+import { getContent, Content } from './lib/content'
 
 function App() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [content, setContent] = useState<Content>({})
+  const [contentLoading, setContentLoading] = useState(true)
+
+  useEffect(() => {
+    loadContent()
+  }, [])
+
+  const loadContent = async () => {
+    const data = await getContent()
+    setContent(data)
+    setContentLoading(false)
+  }
+
+  const c = (key: string, fallback: string) => content[key] || fallback
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,15 +50,29 @@ function App() {
     setLoading(false)
   }
 
+  if (contentLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-primary-dark">Cargando...</div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Header */}
       <header className="bg-white h-20 flex items-center justify-between px-8 lg:px-30 sticky top-0 z-50 shadow-sm">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary-dark rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">A</span>
-          </div>
-          <span className="text-primary-dark font-bold text-lg">AHORRO ACTIVO</span>
+          {content.logo_url ? (
+            <img src={content.logo_url} alt="Ahorro Activo" className="h-10 object-contain" />
+          ) : (
+            <>
+              <div className="w-10 h-10 bg-primary-dark rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">A</span>
+              </div>
+              <span className="text-primary-dark font-bold text-lg">AHORRO ACTIVO</span>
+            </>
+          )}
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -62,28 +91,28 @@ function App() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
           <div className="flex flex-col gap-8 max-w-xl">
             <span className="inline-block bg-secondary/20 text-primary-dark font-medium text-sm px-4 py-2 rounded-full w-fit">
-              Ahorro automatizado en el Merval
+              {c('hero_badge', 'Ahorro automatizado en el Merval')}
             </span>
 
             <h1 className="text-primary-dark text-4xl lg:text-5xl font-bold leading-tight">
-              Tu futuro financiero,<br />en piloto automático
+              {c('hero_title', 'Tu futuro financiero, en piloto automático')}
             </h1>
 
             <p className="text-primary-dark/70 text-xl">
-              Invertí automáticamente en el Merval cada mes. Simple, seguro y sin complicaciones.
+              {c('hero_subtitle', 'Invertí automáticamente en el Merval cada mes. Simple, seguro y sin complicaciones.')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#waitlist" className="bg-primary text-white font-semibold px-8 py-4 rounded-lg hover:bg-primary-dark transition-colors text-center">
-                Sumarme a la lista de espera
+                {c('hero_cta_primary', 'Sumarme a la lista de espera')}
               </a>
               <a href="#como-funciona" className="bg-white text-primary-dark font-semibold px-8 py-4 rounded-lg border-2 border-primary-dark/20 hover:border-primary transition-colors text-center">
-                Ver cómo funciona
+                {c('hero_cta_secondary', 'Ver cómo funciona')}
               </a>
             </div>
 
             <p className="text-primary-dark/60 text-sm font-medium">
-              Regulado por CNV • +5,000 usuarios en lista de espera • 100% seguro
+              {c('hero_trust', 'Regulado por CNV • +5,000 usuarios en lista de espera • 100% seguro')}
             </p>
           </div>
 
@@ -111,10 +140,10 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-primary-dark text-4xl font-bold mb-4">
-              ¿Por qué elegir Ahorro Activo?
+              {c('benefits_title', '¿Por qué elegir Ahorro Activo?')}
             </h2>
             <p className="text-primary-dark/70 text-lg">
-              La forma más simple de construir tu futuro financiero
+              {c('benefits_subtitle', 'La forma más simple de construir tu futuro financiero')}
             </p>
           </div>
 
@@ -125,9 +154,9 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </div>
-              <h3 className="text-primary-dark text-2xl font-bold mb-3">Automático</h3>
+              <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_1_title', 'Automático')}</h3>
               <p className="text-primary-dark/70">
-                Configurá una vez y olvidate. Tu inversión se ejecuta automáticamente cada mes.
+                {c('benefit_1_desc', 'Configurá una vez y olvidate. Tu inversión se ejecuta automáticamente cada mes.')}
               </p>
             </div>
 
@@ -137,9 +166,9 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-primary-dark text-2xl font-bold mb-3">Sin complicaciones</h3>
+              <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_2_title', 'Sin complicaciones')}</h3>
               <p className="text-primary-dark/70">
-                Te guiamos paso a paso. No necesitás ser experto para empezar a invertir.
+                {c('benefit_2_desc', 'Te guiamos paso a paso. No necesitás ser experto para empezar a invertir.')}
               </p>
             </div>
 
@@ -149,9 +178,9 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="text-primary-dark text-2xl font-bold mb-3">Seguro y regulado</h3>
+              <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_3_title', 'Seguro y regulado')}</h3>
               <p className="text-primary-dark/70">
-                Operamos bajo la regulación de la CNV. Tu dinero está protegido.
+                {c('benefit_3_desc', 'Operamos bajo la regulación de la CNV. Tu dinero está protegido.')}
               </p>
             </div>
           </div>
@@ -163,10 +192,10 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-white text-4xl font-bold mb-4">
-              ¿Cómo funciona?
+              {c('how_title', '¿Cómo funciona?')}
             </h2>
             <p className="text-white/80 text-lg">
-              Comenzá a invertir en solo 3 pasos
+              {c('how_subtitle', 'Comenzá a invertir en solo 3 pasos')}
             </p>
           </div>
 
@@ -175,9 +204,9 @@ function App() {
               <div className="w-14 h-14 bg-primary rounded-full mx-auto mb-6 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">1</span>
               </div>
-              <h3 className="text-white text-xl font-bold mb-3">Creá tu cuenta</h3>
+              <h3 className="text-white text-xl font-bold mb-3">{c('step_1_title', 'Creá tu cuenta')}</h3>
               <p className="text-white/80">
-                Registrate gratis en minutos. Solo necesitás tu DNI y un email.
+                {c('step_1_desc', 'Registrate gratis en minutos. Solo necesitás tu DNI y un email.')}
               </p>
             </div>
 
@@ -185,9 +214,9 @@ function App() {
               <div className="w-14 h-14 bg-primary rounded-full mx-auto mb-6 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">2</span>
               </div>
-              <h3 className="text-white text-xl font-bold mb-3">Configurá tu plan</h3>
+              <h3 className="text-white text-xl font-bold mb-3">{c('step_2_title', 'Configurá tu plan')}</h3>
               <p className="text-white/80">
-                Elegí cuánto querés invertir y en qué activos del Merval.
+                {c('step_2_desc', 'Elegí cuánto querés invertir y en qué activos del Merval.')}
               </p>
             </div>
 
@@ -195,9 +224,9 @@ function App() {
               <div className="w-14 h-14 bg-primary rounded-full mx-auto mb-6 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">3</span>
               </div>
-              <h3 className="text-white text-xl font-bold mb-3">Mirá cómo crece</h3>
+              <h3 className="text-white text-xl font-bold mb-3">{c('step_3_title', 'Mirá cómo crece')}</h3>
               <p className="text-white/80">
-                Seguí tu progreso en tiempo real desde la app.
+                {c('step_3_desc', 'Seguí tu progreso en tiempo real desde la app.')}
               </p>
             </div>
           </div>
@@ -208,10 +237,10 @@ function App() {
       <section id="waitlist" className="bg-primary py-24 px-8 lg:px-30">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-white text-4xl font-bold mb-4">
-            Sumate a la lista de espera
+            {c('waitlist_title', 'Sumate a la lista de espera')}
           </h2>
           <p className="text-white/90 text-lg mb-8">
-            Sé de los primeros en acceder a Ahorro Activo. Dejá tu email y te avisamos cuando estemos listos.
+            {c('waitlist_subtitle', 'Sé de los primeros en acceder a Ahorro Activo. Dejá tu email y te avisamos cuando estemos listos.')}
           </p>
 
           {!submitted ? (
@@ -252,7 +281,7 @@ function App() {
           )}
 
           <p className="text-white/80 text-sm mt-6">
-            Sin costos ocultos • Cancelá cuando quieras • No compartimos tu email
+            {c('waitlist_note', 'Sin costos ocultos • Cancelá cuando quieras • No compartimos tu email')}
           </p>
         </div>
       </section>
@@ -261,7 +290,7 @@ function App() {
       <section id="faq" className="bg-white py-24 px-8 lg:px-30">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-primary-dark text-4xl font-bold text-center mb-12">
-            Preguntas frecuentes
+            {c('faq_title', 'Preguntas frecuentes')}
           </h2>
 
           <div className="space-y-6">
@@ -315,7 +344,7 @@ function App() {
             <div className="max-w-xs">
               <span className="text-white font-bold text-xl block mb-4">AHORRO ACTIVO</span>
               <p className="text-white/70 text-sm leading-relaxed">
-                La forma más simple de invertir en el Merval. Automatizá tu ahorro y construí tu futuro financiero.
+                {c('footer_tagline', 'La forma más simple de invertir en el Merval. Automatizá tu ahorro y construí tu futuro financiero.')}
               </p>
             </div>
 
