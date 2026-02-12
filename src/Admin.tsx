@@ -44,6 +44,7 @@ export default function Admin() {
   const [saved, setSaved] = useState<string | null>(null)
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [uploadingLogo, setUploadingLogo] = useState(false)
+  const [logoMessage, setLogoMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   useEffect(() => {
     if (authenticated) {
@@ -81,12 +82,35 @@ export default function Admin() {
   const handleLogoUpload = async () => {
     if (!logoFile) return
     setUploadingLogo(true)
-    const url = await uploadLogo(logoFile)
-    if (url) {
-      await updateContent('logo_url', url)
-      setContent({ ...content, logo_url: url })
-      setLogoFile(null)
+    setLogoMessage(null)
+
+    try {
+      const result = await uploadLogo(logoFile)
+
+      if (result.error) {
+        setLogoMessage({ type: 'error', text: result.error })
+        setUploadingLogo(false)
+        return
+      }
+
+      if (result.url) {
+        const success = await updateContent('logo_url', result.url)
+        if (success) {
+          setContent({ ...content, logo_url: result.url })
+          setLogoFile(null)
+          setLogoMessage({ type: 'success', text: '¡Logo subido correctamente!' })
+          // Clear file input
+          const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+          if (fileInput) fileInput.value = ''
+        } else {
+          setLogoMessage({ type: 'error', text: 'Error al guardar la URL del logo en la base de datos' })
+        }
+      }
+    } catch (err) {
+      setLogoMessage({ type: 'error', text: 'Error inesperado al subir el logo' })
+      console.error('Logo upload error:', err)
     }
+
     setUploadingLogo(false)
   }
 
@@ -159,7 +183,10 @@ export default function Admin() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
+                onChange={(e) => {
+                  setLogoFile(e.target.files?.[0] || null)
+                  setLogoMessage(null)
+                }}
                 className="w-full text-sm"
               />
             </div>
@@ -171,6 +198,12 @@ export default function Admin() {
               {uploadingLogo ? 'Subiendo...' : 'Subir'}
             </button>
           </div>
+
+          {logoMessage && (
+            <div className={`mt-4 p-3 rounded-lg ${logoMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              {logoMessage.text}
+            </div>
+          )}
         </div>
 
         {/* Content Fields */}

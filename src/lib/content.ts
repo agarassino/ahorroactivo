@@ -31,22 +31,55 @@ export async function updateContent(key: string, value: string): Promise<boolean
   return true
 }
 
-export async function uploadLogo(file: File): Promise<string | null> {
-  const fileExt = file.name.split('.').pop()
-  const fileName = `logo.${fileExt}`
+export type UploadResult = {
+  url: string | null
+  error: string | null
+}
 
+export async function uploadLogo(file: File): Promise<UploadResult> {
+  const fileExt = file.name.split('.').pop()
+  const fileName = `logo-${Date.now()}.${fileExt}`
+
+  // First, try to upload to the bucket
   const { error: uploadError } = await supabase.storage
     .from('images')
     .upload(fileName, file, { upsert: true })
 
   if (uploadError) {
     console.error('Error uploading logo:', uploadError)
-    return null
+
+    // Provide user-friendly error messages
+    if (uploadError.message.includes('bucket') || uploadError.message.includes('not found')) {
+      return {
+        url: null,
+        error: 'El bucket de storage "images" no existe. Crealo en Supabase Dashboard → Storage.'
+      }
+    }
+    if (uploadError.message.includes('policy') || uploadError.message.includes('permission') || uploadError.message.includes('RLS')) {
+      return {
+        url: null,
+        error: 'No hay permisos para subir archivos. Configurá las políticas RLS del bucket en Supabase.'
+      }
+    }
+    if (uploadError.message.includes('size')) {
+      return {
+        url: null,
+        error: 'El archivo es demasiado grande. Intentá con una imagen más pequeña.'
+      }
+    }
+
+    return {
+      url: null,
+      error: `Error al subir: ${uploadError.message}`
+    }
   }
 
   const { data } = supabase.storage
     .from('images')
     .getPublicUrl(fileName)
 
-  return data.publicUrl
+  return {
+    url: data.publicUrl,
+    error: null
+  }
 }
