@@ -21,8 +21,7 @@ export async function getContent(): Promise<Content> {
 export async function updateContent(key: string, value: string): Promise<boolean> {
   const { error } = await supabase
     .from('content')
-    .update({ value, updated_at: new Date().toISOString() })
-    .eq('key', key)
+    .upsert({ key, value, updated_at: new Date().toISOString() })
 
   if (error) {
     console.error('Error updating content:', error)

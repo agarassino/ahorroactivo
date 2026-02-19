@@ -297,41 +297,41 @@ function App() {
           <div className="space-y-6">
             <details className="bg-background rounded-2xl p-6 group">
               <summary className="text-primary-dark font-bold text-lg cursor-pointer list-none flex justify-between items-center">
-                ¿Qué es Ahorro Activo?
+                {c('faq_1_question', '¿Qué es Ahorro Activo?')}
                 <span className="text-primary group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-primary-dark/70 mt-4">
-                Ahorro Activo es una plataforma que te permite invertir de forma automática y recurrente en activos del Merval. Configurás tu plan una vez y nosotros nos encargamos del resto.
+                {c('faq_1_answer', 'Es la primera solución de ahorro inteligente diseñada para la familia. Te permite automatizar tus ahorros y los de tus hijos de forma sencilla, invirtiendo en el mercado financiero para que tu dinero no pierda valor mientras tus hijos aprenden educación financiera de forma práctica.')}
               </p>
             </details>
 
             <details className="bg-background rounded-2xl p-6 group">
               <summary className="text-primary-dark font-bold text-lg cursor-pointer list-none flex justify-between items-center">
-                ¿Cuánto dinero necesito para empezar?
+                {c('faq_2_question', '¿Cuánto dinero necesito para empezar?')}
                 <span className="text-primary group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-primary-dark/70 mt-4">
-                Podés empezar con tan solo $10.000 ARS. No hay monto mínimo de inversión mensual una vez que tenés tu cuenta activa.
+                {c('faq_2_answer', 'Podés comenzar tu camino financiero desde solo un SPY-500. Queremos que el ahorro sea accesible para todas las familias.')}
               </p>
             </details>
 
             <details className="bg-background rounded-2xl p-6 group">
               <summary className="text-primary-dark font-bold text-lg cursor-pointer list-none flex justify-between items-center">
-                ¿Es seguro invertir con Ahorro Activo?
+                {c('faq_3_question', '¿Es seguro invertir con Ahorro Activo?')}
                 <span className="text-primary group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-primary-dark/70 mt-4">
-                Sí, operamos bajo la regulación de la Comisión Nacional de Valores (CNV). Tus inversiones están en tu nombre y podés retirar tu dinero cuando quieras.
+                {c('faq_3_answer', 'Absolutamente. Contamos con encriptación de grado bancario y operamos bajo la regulación de la CNV (Comisión Nacional de Valores). La posición siempre está a tu nombre y los perfiles de tus hijos están bajo tu total supervisión. Tu tranquilidad y la seguridad de tu familia son nuestra prioridad.')}
               </p>
             </details>
 
             <details className="bg-background rounded-2xl p-6 group">
               <summary className="text-primary-dark font-bold text-lg cursor-pointer list-none flex justify-between items-center">
-                ¿Cuándo estará disponible la app?
+                {c('faq_4_question', '¿Cuándo estará disponible la app?')}
                 <span className="text-primary group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-primary-dark/70 mt-4">
-                Estamos trabajando para lanzar muy pronto. Sumate a la lista de espera y serás de los primeros en acceder cuando estemos listos.
+                {c('faq_4_answer', '¡Estamos en la cuenta regresiva! Actualmente estamos en fase de prueba cerrada. Si te sumás a nuestra lista de espera, vas a recibir una invitación exclusiva para ser de los primeros en transformar el futuro financiero de tu familia y obtener beneficios por lanzamiento.')}
               </p>
             </details>
           </div>

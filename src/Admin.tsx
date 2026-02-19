@@ -31,6 +31,14 @@ const CONTENT_FIELDS = [
   { key: 'waitlist_subtitle', label: 'Waitlist - Subtítulo', multiline: true },
   { key: 'waitlist_note', label: 'Waitlist - Nota', multiline: false },
   { key: 'faq_title', label: 'FAQ - Título', multiline: false },
+  { key: 'faq_1_question', label: 'FAQ 1 - Pregunta', multiline: false },
+  { key: 'faq_1_answer', label: 'FAQ 1 - Respuesta', multiline: true },
+  { key: 'faq_2_question', label: 'FAQ 2 - Pregunta', multiline: false },
+  { key: 'faq_2_answer', label: 'FAQ 2 - Respuesta', multiline: true },
+  { key: 'faq_3_question', label: 'FAQ 3 - Pregunta', multiline: false },
+  { key: 'faq_3_answer', label: 'FAQ 3 - Respuesta', multiline: true },
+  { key: 'faq_4_question', label: 'FAQ 4 - Pregunta', multiline: false },
+  { key: 'faq_4_answer', label: 'FAQ 4 - Respuesta', multiline: true },
   { key: 'footer_tagline', label: 'Footer - Tagline', multiline: true },
 ]
 
