@@ -151,9 +151,13 @@ function App() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-background rounded-2xl p-8 text-center">
               <div className="w-16 h-16 bg-primary rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
+                {content.benefit_1_icon ? (
+                  <img src={content.benefit_1_icon} alt="" className="w-8 h-8 object-contain" />
+                ) : (
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                )}
               </div>
               <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_1_title', 'Automático')}</h3>
               <p className="text-primary-dark/70">
@@ -163,9 +167,13 @@ function App() {
 
             <div className="bg-background rounded-2xl p-8 text-center">
               <div className="w-16 h-16 bg-primary-dark rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+                {content.benefit_2_icon ? (
+                  <img src={content.benefit_2_icon} alt="" className="w-8 h-8 object-contain" />
+                ) : (
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                )}
               </div>
               <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_2_title', 'Sin complicaciones')}</h3>
               <p className="text-primary-dark/70">
@@ -175,9 +183,13 @@ function App() {
 
             <div className="bg-background rounded-2xl p-8 text-center">
               <div className="w-16 h-16 bg-secondary rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+                {content.benefit_3_icon ? (
+                  <img src={content.benefit_3_icon} alt="" className="w-8 h-8 object-contain" />
+                ) : (
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                )}
               </div>
               <h3 className="text-primary-dark text-2xl font-bold mb-3">{c('benefit_3_title', 'Seguro y regulado')}</h3>
               <p className="text-primary-dark/70">

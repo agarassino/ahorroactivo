@@ -35,9 +35,9 @@ export type UploadResult = {
   error: string | null
 }
 
-export async function uploadLogo(file: File): Promise<UploadResult> {
+export async function uploadImage(file: File, prefix: string = 'image'): Promise<UploadResult> {
   const fileExt = file.name.split('.').pop()
-  const fileName = `logo-${Date.now()}.${fileExt}`
+  const fileName = `${prefix}-${Date.now()}.${fileExt}`
 
   // First, try to upload to the bucket
   const { error: uploadError } = await supabase.storage
@@ -45,7 +45,7 @@ export async function uploadLogo(file: File): Promise<UploadResult> {
     .upload(fileName, file, { upsert: true })
 
   if (uploadError) {
-    console.error('Error uploading logo:', uploadError)
+    console.error('Error uploading image:', uploadError)
 
     // Provide user-friendly error messages
     if (uploadError.message.includes('bucket') || uploadError.message.includes('not found')) {
@@ -81,4 +81,8 @@ export async function uploadLogo(file: File): Promise<UploadResult> {
     url: data.publicUrl,
     error: null
   }
+}
+
+export async function uploadLogo(file: File): Promise<UploadResult> {
+  return uploadImage(file, 'logo')
 }
